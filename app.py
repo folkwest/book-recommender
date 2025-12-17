@@ -8,7 +8,8 @@ from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 
 import gradio as gr
-#comment
+
+#decided to switch to HuggingFace embeddings for local usage without API calls
 
 from langchain.embeddings import HuggingFaceEmbeddings
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
