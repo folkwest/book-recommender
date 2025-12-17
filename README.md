@@ -1,5 +1,6 @@
 ---
 title: BookWyrm
+emoji:⚡
 colorFrom: indigo
 colorTo: purple
 sdk: gradio
