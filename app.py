@@ -10,6 +10,7 @@ from langchain_chroma import Chroma
 import gradio as gr
 
 #decided to switch to HuggingFace embeddings for local usage without API calls
+#delete OpenAIEmbeddings
 
 from langchain.embeddings import HuggingFaceEmbeddings
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
