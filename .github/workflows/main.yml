@@ -22,33 +22,19 @@ jobs:
         run: |
           python -m pip install --upgrade huggingface_hub
 
-      - name: Push Space files
+      - name: Push HF Space files
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python - << 'EOF'
-          from huggingface_hub import HfApi
-          import os
+          # Copy HF Space README to README.md so the Space sees it
+          cp README_SPACE.md README.md
 
-          api = HfApi(token=os.environ["HF_TOKEN"])
+          # Add all files/folders your Space needs
+          git add app.py books_with_emotions.csv tagged_description.txt cover-not-found.jpg requirements.txt chroma README.md
 
-          # List files to upload (only the ones your Space needs)
-          files_to_upload = [
-              "README.md",
-              "app.py",
-              "books_with_emotions.csv",
-              "tagged_description.txt",
-              "cover-not-found.jpg",
-              "requirements.txt"
-          ]
+          # Commit and push to the HF Space
+          git commit -m "Sync HF Space files"
+          git push https://$HF_TOKEN@huggingface.co/spaces/cternero/book-wyrm main
 
-          for file_path in files_to_upload:
-              if os.path.exists(file_path):
-                  api.upload_file(
-                      path_or_fileobj=file_path,
-                      path_in_repo=file_path,
-                      repo_id="cternero/book-wyrm",
-                      repo_type="space",
-                      commit_message="Sync from GitHub"
-                  )
-          EOF
+          # Remove temporary README.md so local repo isn't affected
+          rm README.md
