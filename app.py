@@ -1,7 +1,3 @@
-import sys
-print(sys.executable)
-
-
 import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
@@ -13,12 +9,8 @@ from langchain_chroma import Chroma
 
 import gradio as gr
 
-#from langchain.embeddings import HuggingFaceEmbeddings
-#embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-#db_books = Chroma.from_documents(
-    #documents,
-   # embedding=embedding_model
-#)
+from langchain.embeddings import HuggingFaceEmbeddings
+embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 load_dotenv()
 
@@ -35,7 +27,12 @@ books["large_thumbnail"] = np.where(
 raw_documents = TextLoader('tagged_description.txt', encoding="utf-8").load()
 text_splitter = CharacterTextSplitter(separator="\n", chunk_size=1, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
-db_books = Chroma.from_documents(documents, OpenAIEmbeddings())
+db_books = Chroma.from_documents(
+    documents,
+    embedding=embedding_model,
+     persist_directory="./chroma"
+)
+db_books.persist()
 
 def retrieve_semantic_recommendations(
         query: str,
@@ -113,5 +110,5 @@ with gr.Blocks() as dashboard:
                         outputs = output)
 
 if __name__ == "__main__":
-    dashboard.launch(theme = gr.themes.Soft(), share=True)
+    dashboard.launch(theme = gr.themes.Soft())
 
