@@ -13,7 +13,7 @@ embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-Mi
 
 load_dotenv()
 
-#data directory variable
+#data directory variable, not used in space
 DATA_DIR = "data"
 
 #load in books data with emotions
