@@ -30,7 +30,7 @@ jobs:
           cp README_SPACE.md README.md
 
           # Add all files/folders your Space needs
-          git add app.py books_with_emotions.csv tagged_description.txt cover-not-found.jpg requirements.txt chroma README.md
+          git add app.py data/books_with_emotions.csv data/tagged_description.txt cover-not-found.jpg requirements.txt chroma README.md
 
           # Commit and push to the HF Space
           git commit -m "Sync HF Space files"
