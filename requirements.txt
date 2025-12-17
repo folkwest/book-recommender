@@ -1,12 +1,12 @@
-kagglehub
-matplotlib
-seaborn
-pandas
-python-dotenv
-langchain-community
 langchain-openai
 langchain-chroma
 transformers
-gradio
 notebook
 ipywidgets
+kagglehub==0.3.13
+matplotlib==3.10.8
+seaborn==0.13.2
+pandas==2.3.3
+python-dotenv==1.2.1
+langchain-community==0.3.2  # compatible with Python 3.10
+gradio[oauth,mcp]==6.1.0
