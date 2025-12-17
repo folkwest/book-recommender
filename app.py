@@ -19,7 +19,8 @@ DATA_DIR = "data"
 #load in books data with emotions
 #see sentiment_analysis.py for how this file was created
 def load_books(): #speed up build time
-    return pd.read_csv(os.path.join(DATA_DIR, "books_with_emotions.csv"))
+    #return pd.read_csv(os.path.join(DATA_DIR, "books_with_emotions.csv"))
+    return pd.read_csv("books_with_emotions.csv")
 
 books = load_books()
 
@@ -32,7 +33,8 @@ books["large_thumbnail"] = np.where(
 )
 
 #prepare tagged descriptions for vector DB
-raw_documents = TextLoader(os.path.join(DATA_DIR, "tagged_description.txt"), encoding="utf-8").load()
+#raw_documents = TextLoader(os.path.join(DATA_DIR, "tagged_description.txt"), encoding="utf-8").load()
+raw_documents = TextLoader("tagged_description.txt", encoding="utf-8").load()
 text_splitter = CharacterTextSplitter(separator="\n", chunk_size=1, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
 

@@ -39,7 +39,8 @@ jobs:
               "books_with_emotions.csv",
               "tagged_description.txt",
               "cover-not-found.jpg",
-              "requirements.txt"
+              "requirements.txt",
+              "chroma"
           ]
 
           for file_path in files_to_upload:
