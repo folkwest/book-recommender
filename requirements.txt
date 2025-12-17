@@ -11,3 +11,4 @@ python-dotenv==1.2.1
 langchain-community==0.3.2  # compatible with Python 3.10
 gradio[oauth,mcp]==6.1.0
 sentence-transformers==0.3.9
+sentencepiece==0.1.98
