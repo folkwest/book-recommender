@@ -50,4 +50,4 @@ jobs:
                       repo_type="space",
                       commit_message="Sync from GitHub"
                   )
-EOF
+          EOF
