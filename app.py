@@ -1,24 +1,29 @@
 import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
-
 from langchain_community.document_loaders import TextLoader
-from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
-
+import os
 import gradio as gr
-
-#decided to switch to HuggingFace embeddings for local usage without API calls
-#delete OpenAIEmbeddings
-
 from langchain_community.embeddings import HuggingFaceEmbeddings
+
+#Model
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 load_dotenv()
 
-books = pd.read_csv("books_with_emotions.csv")
+#data directory variable
+DATA_DIR = "data"
 
+#load in books data with emotions
+#see sentiment_analysis.py for how this file was created
+def load_books(): #speed up build time
+    return pd.read_csv(os.path.join(DATA_DIR, "books_with_emotions.csv"))
+
+books = load_books()
+
+#handle missing thumbnails
 books["large_thumbnail"] = books["thumbnail"] + "&fife=w800"
 books["large_thumbnail"] = np.where(
      books["large_thumbnail"].isna(),
@@ -26,17 +31,22 @@ books["large_thumbnail"] = np.where(
     books["large_thumbnail"],
 )
 
-#this is from vector_search, when switching to .py just use the variable name directly
-raw_documents = TextLoader('tagged_description.txt', encoding="utf-8").load()
+#prepare tagged descriptions for vector DB
+raw_documents = TextLoader(os.path.join(DATA_DIR, "tagged_description.txt"), encoding="utf-8").load()
 text_splitter = CharacterTextSplitter(separator="\n", chunk_size=1, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
-db_books = Chroma.from_documents(
-    documents,
-    embedding=embedding_model,
-     persist_directory="./chroma"
-)
-db_books.persist()
 
+#create or load vector DB
+persist_dir = "./chroma"
+
+if os.path.exists(persist_dir) and os.listdir(persist_dir):
+    # Load existing DB
+    db_books = Chroma(persist_directory=persist_dir, embedding_function=embedding_model)
+else:
+    # Build DB from documents and persist
+    db_books = Chroma.from_documents(documents, embedding=embedding_model, persist_directory=persist_dir)
+
+#get recommendations based on semantic search
 def retrieve_semantic_recommendations(
         query: str,
         category: str = None,
@@ -67,6 +77,7 @@ def retrieve_semantic_recommendations(
 
     return book_recs
 
+#recommend books function to be called on button click
 def recommend_books(
         query: str,
         category: str,
@@ -95,6 +106,7 @@ def recommend_books(
 categories = ["All"] + sorted(books["simple_categories"].unique())
 tones = ["None", "Happy", "Surprising", "Angry", "Suspenseful", "Sad"] + ["All"]
 
+#gradio interface
 with gr.Blocks() as dashboard:
     gr.Markdown("# Semantic book recommender") #title of the dashboard
 
