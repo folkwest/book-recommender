@@ -38,7 +38,8 @@ jobs:
               "app.py",
               "books_with_emotions.csv",
               "tagged_description.txt",
-              "cover-not-found.jpg"
+              "cover-not-found.jpg",
+              "requirements.txt"
           ]
 
           for file_path in files_to_upload:
