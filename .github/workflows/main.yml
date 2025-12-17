@@ -18,10 +18,11 @@ jobs:
           fetch-depth: 0
           lfs: true
 
-      - name: Install Hugging Face CLI
-        run: pip install huggingface_hub
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade huggingface_hub
 
-      - name: Push to Hugging Face Space
+      - name: Push Space files
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
@@ -31,10 +32,22 @@ jobs:
 
           api = HfApi(token=os.environ["HF_TOKEN"])
 
-          api.upload_folder(
-              folder_path=".",
-              repo_id="cternero/book-wyrm",
-              repo_type="space",
-              commit_message="Sync from GitHub"
-          )
-          EOF
+          # List files to upload (only the ones your Space needs)
+          files_to_upload = [
+              "README.md",
+              "app.py",
+              "books_with_emotions.csv",
+              "tagged_description.txt",
+              "cover-not-found.jpg"
+          ]
+
+          for file_path in files_to_upload:
+              if os.path.exists(file_path):
+                  api.upload_file(
+                      path_or_fileobj=file_path,
+                      path_in_repo=file_path,
+                      repo_id="cternero/book-wyrm",
+                      repo_type="space",
+                      commit_message="Sync from GitHub"
+                  )
+EOF
