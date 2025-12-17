@@ -25,6 +25,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          huggingface-cli upload . cternero/book-wyrm \
+          python -m pip install --upgrade huggingface_hub
+          python -m huggingface_hub.cli upload . cternero/book-wyrm \
             --repo-type space \
             --commit-message "Sync from GitHub"
