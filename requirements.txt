@@ -4,7 +4,6 @@ seaborn
 pandas
 python-dotenv
 langchain-community
-langchain-opencv
 langchain-openai
 langchain-chroma
 transformers
