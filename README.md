@@ -1,10 +1,3 @@
----
-title: BookWyrm
-sdk: gradio
-app_file: app.py
-startup_duration_timeout: 1hr
----
-
 ## BookWyrm
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://www.python.org/)
@@ -13,7 +6,7 @@ startup_duration_timeout: 1hr
 
 **Semantic Book Recommender** that suggests books based on your description, with optional filtering by category and emotional tone.
 
-![Demo Screenshot](cover-not-found.jpg)
+![Demo Screenshot](demo.gif)
 
 ---
 
@@ -63,7 +56,7 @@ Try it now on Hugging Face Spaces: [BookWyrm Demo](https://huggingface.co/spaces
 
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/book-wyrm.git
+git clone https://github.com/folkwest/book-wyrm.git
 cd book-wyrm
 
 # Install dependencies
